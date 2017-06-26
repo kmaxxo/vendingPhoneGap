@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vending</title>
+
+    <!-- CSS de Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <style type="text/css">
+        iframe { width: 100%; border: 1px solid #000000; }
+    </style>
+
+    <script type="text/javascript">
+            
+        function iframeLoaded(iframe_parent) {
+
+            // var iFrameID = document.getElementById('idIframe');
+
+            var iFrameID = iframe_parent;
+
+            if(iFrameID) {
+                // here you can make the height, I delete it first, then I make it again
+                iFrameID.height = "";
+                iFrameID.height = (iFrameID.contentWindow.document.body.scrollHeight+10) + "px";
+            }   
+        }
+
+
+</script>
+
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="page-header">
+            <!-- <h1>Vending</h1> -->
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <iframe src="index_izquierda.html" onload="iframeLoaded(this)" frameborder="0"></iframe>
+            </div>
+            <div class="col-sm-6">
+                <iframe src="index_derecha.html" onload="iframeLoaded(this)" frameborder="0"></iframe>
+            </div>
+        </div>
+
+    </div>
+    <!-- /container -->
+
+</body>
+</html>
