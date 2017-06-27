@@ -4,7 +4,9 @@ $(document).ready(function() {
 	$('#go').on('click', function(e){
 		e.preventDefault();
 		vendingRandom.init();	
-	})
+	});
+
+	vendingRandom.desactivateSquare();
 
 });
 
@@ -30,13 +32,27 @@ var vendingRandom = {
 
 	},
 
+	desactivateSquare : function () {
+
+		$('td', vendingRandom.handler).on('click', function(){
+
+			$(this).toggleClass("warning");
+
+		});
+
+	},
+
 	sorteo : function(){
 
 		this.todas_casillas = [];
 
 		for(i=0;i<$('td', this.handler).length;i++){
 
-			this.todas_casillas.push(i);
+			casilla = $('td', vendingRandom.handler)[i];
+
+			if ( ! $(casilla).hasClass("warning") ){
+				this.todas_casillas.push(i);
+			}
 
 		}
 
