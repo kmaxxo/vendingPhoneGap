@@ -8,9 +8,14 @@ $(document).ready(function() {
 
 	$('#reset').on('click', function(e){
 		e.preventDefault();
-		if ( confirm("¡Si resetea, se borrará el histórico de su APP!") ){
-			vendingRandom.resetStorage();
-		}
+
+	    navigator.notification.confirm(
+	        '¡Si resetea, se borrará el histórico de su APP! ¿está seguro?',  // message
+	        vendingRandom.resetStorage,              // callback to invoke with index of button pressed
+	        'Resetear APP',            // title
+	        'Sí,Cancelar'          // buttonLabels
+	    );
+
 	});
 
 	vendingRandom.desactivateSquare();
@@ -78,10 +83,12 @@ var vendingRandom = {
 
 	},
 
-	resetStorage : function(){
+	resetStorage : function(buttonIndex){
 
-		window.localStorage.clear();
-		// location.reload();
+		if ( buttonIndex == 1 ){
+			window.localStorage.clear();
+			// location.reload();
+		}
 
 	},
 
