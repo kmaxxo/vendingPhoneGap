@@ -6,6 +6,13 @@ $(document).ready(function() {
 		vendingRandom.init();	
 	});
 
+	$('#reset').on('click', function(e){
+		e.preventDefault();
+		if ( confirm("¡Si resetea, se borrará el histórico de su APP!") ){
+			vendingRandom.resetStorage();
+		}
+	});
+
 	vendingRandom.desactivateSquare();
 
 });
@@ -17,6 +24,8 @@ var vendingRandom = {
 	todas_casillas : null,
 	seleccionada : null,
 	listener : 0,
+	storage_key_name : "consumed-" + $('#vending_matrix').data("matrix-version"),
+	storage_stored : null,
 
 	init : function (){
 
@@ -27,6 +36,8 @@ var vendingRandom = {
 		this.todas_casillas = null;
 		this.seleccionada = null;
 		this.listener = 0;
+		this.desactivateStored();
+
 
 		this.sorteo();
 
@@ -39,6 +50,38 @@ var vendingRandom = {
 			$(this).toggleClass("warning");
 
 		});
+
+		// set values as IDs
+		for(i=0;i<=$('td', vendingRandom.handler).length;i++) {
+			obj = $('td', vendingRandom.handler)[i];
+			$(obj).attr("id", $(obj).text());
+		}
+
+		// get storage and set consumed
+		this.desactivateStored();
+
+	},
+
+	desactivateStored : function(){
+
+		var consumedItem = window.localStorage.getItem(vendingRandom.storage_key_name);
+
+		if ( consumedItem ) {
+
+			vendingRandom.storage_stored = JSON.parse(consumedItem);
+
+			for(i=0; i<vendingRandom.storage_stored.length ; i++){
+				$('#'+vendingRandom.storage_stored[i]).addClass("warning");
+			}
+
+		}
+
+	},
+
+	resetStorage : function(){
+
+		window.localStorage.clear();
+		// location.reload();
 
 	},
 
@@ -71,6 +114,20 @@ var vendingRandom = {
 
 		casilla = $('td', vendingRandom.handler)[this.seleccionada];
 		$(casilla).addClass("success");
+
+		// save storage
+		id2save = $(casilla).attr("id");
+
+		if (vendingRandom.storage_stored == null || (vendingRandom.storage_stored != null && vendingRandom.storage_stored.indexOf(id2save) === -1) ) {
+
+			if ( vendingRandom.storage_stored == null ) {
+				vendingRandom.storage_stored = [];
+			}
+
+			vendingRandom.storage_stored.push( id2save );
+			window.localStorage.setItem(vendingRandom.storage_key_name, JSON.stringify(vendingRandom.storage_stored));
+
+		}
 
 	},
 
@@ -118,6 +175,15 @@ var vendingRandom = {
 		}
 
 		return array;
+
+	}
+
+};
+
+
+var storageVending = {
+
+	init : function(){
 
 	}
 
